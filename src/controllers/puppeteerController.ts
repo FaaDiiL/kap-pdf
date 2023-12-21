@@ -31,7 +31,6 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         const page = await browser.newPage();
         page.setDefaultNavigationTimeout(120000); // Increase timeout
         await page.goto(url, { waitUntil: ['networkidle2', 'domcontentloaded'] });
-        await page.waitForSelector('.ShareRegisterPDF', { visible: true, timeout: 120000 });
         
         // Generate the PDF
         const pdfBuffer = await page.pdf({ format: 'A4' });
