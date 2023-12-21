@@ -22,6 +22,8 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             "--no-zygote",
             "--disable-gpu"
         ],
+        // Use Chrome binary if available, otherwise leave it undefined
+        executablePath: process.env.GOOGLE_CHROME_BIN || undefined,
     };
 
     try {
