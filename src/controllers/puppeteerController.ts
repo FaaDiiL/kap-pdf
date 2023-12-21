@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import puppeteer from 'puppeteer';
+import chromium from 'chromium';
 import path from 'path';
 import fs from 'fs';
 
@@ -14,7 +15,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     try {
         const browser = await puppeteer.launch({
             headless: 'new',
-            args: [ '--hide-scrollbars', '--disable-web-security'],
+            args: [ '--no-sandbox', '--hide-scrollbars', '--disable-web-security' ],
           });
         const page = await browser.newPage();
         page.setDefaultNavigationTimeout(60000);
