@@ -14,7 +14,9 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle0' });
+        await page.waitForSelector('.ShareRegisterSummary'); // Replace 'your-selector' with an element that signifies the page has loaded
+        
         const pdf = await page.pdf({ format: 'A4' });
 
         res.contentType("application/pdf");
