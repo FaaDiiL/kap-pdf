@@ -9,14 +9,18 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         return;
     }
 
+    // Heroku-specific Puppeteer configuration
     const chromeOptions = {
         headless: true,
         defaultViewport: null,
         args: [
-            "--incognito",
             "--no-sandbox",
-            "--single-process",
-            "--no-zygote"
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-accelerated-2d-canvas",
+            "--no-first-run",
+            "--no-zygote",
+            "--disable-gpu"
         ],
     };
 
@@ -25,9 +29,9 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         const page = await browser.newPage();
         page.setDefaultNavigationTimeout(120000); // Increase timeout
         await page.goto(url, { waitUntil: ['networkidle2', 'domcontentloaded'] });
-        await page.waitForSelector('.ShareRegisterPDF', { visible: true });
+        await page.waitForSelector('.ShareRegisterPDF', { visible: true, timeout: 120000 });
         
-        // Now generate the PDF
+        // Generate the PDF
         const pdfBuffer = await page.pdf({ format: 'A4' });
 
         await browser.close();
