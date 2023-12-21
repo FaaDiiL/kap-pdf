@@ -9,7 +9,6 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         return;
     }
 
-    // Heroku-specific Puppeteer configuration
     const chromeOptions = {
         headless: true,
         defaultViewport: null,
@@ -22,25 +21,25 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             "--no-zygote",
             "--disable-gpu"
         ],
-        // Use Chrome binary if available, otherwise leave it undefined
-        executablePath: process.env.GOOGLE_CHROME_BIN || undefined,
     };
 
     try {
         const browser = await puppeteer.launch(chromeOptions);
         const page = await browser.newPage();
-        page.setDefaultNavigationTimeout(120000); // Increase timeout
+        page.setDefaultNavigationTimeout(120000);
         await page.goto(url, { waitUntil: ['networkidle2', 'domcontentloaded'] });
+        await page.waitForSelector('.ShareRegisterPDF', { visible: true, timeout: 120000 });
         
         // Generate the PDF
         const pdfBuffer = await page.pdf({ format: 'A4' });
 
         await browser.close();
 
-        // Set headers and send the PDF buffer to the client
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=download.pdf');
-        res.send(pdfBuffer);
+        // Convert the PDF buffer to a Base64 string
+        const base64String = pdfBuffer.toString('base64');
+
+        // Send the Base64 string to the client
+        res.send(base64String);
 
     } catch (error) {
         console.error(error);
