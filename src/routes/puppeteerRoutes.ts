@@ -3,6 +3,6 @@ import { downloadPageAsPdf } from '../controllers/puppeteerController';
 
 const router = express.Router();
 
-router.get('/*', downloadPageAsPdf);
+router.get('/download-pdf', downloadPageAsPdf);
 
 export default router;
