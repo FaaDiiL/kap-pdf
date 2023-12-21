@@ -11,7 +11,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         return;
     }
     const chromeOptions = {
-        headless: 'new',
+        headless: true,
         defaultViewport: null,
         args: [
             "--incognito",
