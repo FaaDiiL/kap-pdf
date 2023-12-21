@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import puppeteer from 'puppeteer';
-import chromium from 'chromium';
 import path from 'path';
 import fs from 'fs';
 
