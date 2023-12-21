@@ -9,11 +9,22 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         return;
     }
 
+    // Heroku-specific Puppeteer configuration
+    const launchOptions = {
+        headless: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--disable-gpu'
+        ]
+    };
+
     try {
-        const browser = await puppeteer.launch({
-            product: 'firefox',
-            args: ["--no-sandbox"]
-        });
+        const browser = await puppeteer.launch(launchOptions);
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: ['networkidle2'] });
         
@@ -24,7 +35,6 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
 
         // Set headers and send the PDF buffer to the client
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=download.pdf');
         res.send(pdfBuffer);
 
     } catch (error) {
