@@ -2,43 +2,27 @@ import { Request, Response } from 'express';
 import puppeteer from 'puppeteer';
 
 export async function downloadPageAsPdf(req: Request, res: Response) {
-    const url = req.query.url as string;
+    const url = req.query.url;
 
-    if (!url) {
-        res.status(400).send('URL is required');
-        return;
+    // Ensure url is a string
+    if (typeof url !== 'string' || !url) {
+        return res.status(400).send('Invalid URL provided');
     }
 
-    // Heroku-specific Puppeteer configuration
-    const launchOptions = {
-        headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--disable-gpu'
-        ]
-    };
-
     try {
-        const browser = await puppeteer.launch(launchOptions);
+        const browser = await puppeteer.launch({
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: ['networkidle2'] });
-        
-        // Generate the PDF
-        const pdfBuffer = await page.pdf({ format: 'A4' });
+        await page.goto(url, { waitUntil: 'networkidle2' });
+        const pdf = await page.pdf({ format: 'A4' });
+
+        res.contentType("application/pdf");
+        res.send(pdf);
 
         await browser.close();
-
-        // Set headers and send the PDF buffer to the client
-        res.setHeader('Content-Type', 'application/pdf');
-        res.send(pdfBuffer);
-
     } catch (error) {
-        console.error(error);
-        res.status(500).send('An error occurred');
+        console.log(error);
+        res.status(500).send('Error generating PDF');
     }
 }
