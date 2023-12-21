@@ -10,7 +10,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     }
 
     const chromeOptions = {
-        headless: "new",
+        headless: true,
         defaultViewport: null,
         args: [
             "--incognito",
@@ -23,10 +23,11 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     try {
         const browser = await puppeteer.launch(chromeOptions);
         const page = await browser.newPage();
-        page.setDefaultNavigationTimeout(60000);
-        await page.goto(url, { waitUntil: 'networkidle0' });
-
-        // Generate PDF in memory
+        page.setDefaultNavigationTimeout(120000); // Increase timeout
+        await page.goto(url, { waitUntil: ['networkidle2', 'domcontentloaded'] });
+        await page.waitForTimeout(10000); // Additional delay
+        
+        // Now generate the PDF
         const pdfBuffer = await page.pdf({ format: 'A4' });
 
         await browser.close();
