@@ -10,12 +10,22 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         res.status(400).send('URL is required');
         return;
     }
-
+    const chromeOptions = {
+        headless: true,
+        defaultViewport: null,
+        args: [
+            "--incognito",
+            "--no-sandbox",
+            "--single-process",
+            "--no-zygote"
+        ],
+    };
     try {
-        const browser = await puppeteer.launch({
+        const browser = await puppeteer.launch(chromeOptions);
+        /*const browser = await puppeteer.launch(chromeOptions{
             headless: 'new',
             args: [ '--no-sandbox', '--hide-scrollbars', '--disable-web-security' ],
-          });
+          });*/
         const page = await browser.newPage();
         page.setDefaultNavigationTimeout(60000);
         await page.goto(url, { waitUntil: 'networkidle0' });
