@@ -24,8 +24,6 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
             ignoreHTTPSErrors: true,
             headless: true, // Puppeteer defaults to headless mode
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || 
-            '/Applications/Chromium.app/Contents/MacOS/Chromium', // Fallback for local development
         });
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle0' });
