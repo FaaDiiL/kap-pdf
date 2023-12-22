@@ -1,8 +1,27 @@
 import { Request, Response } from 'express';
 import puppeteer from 'puppeteer';
 
+async function crawler(url, evaluator) {
+    const browser = await puppeteer.launch({
+      headless: false,
+    });
+    const page = await browser.newPage()
+    await page.goto(url)
+    const result = await page.evaluate(evaluator)
+    // await browser.close();
+    return result
+  
+}
+
 export async function downloadPageAsPdf(req: Request, res: Response) {
     const url = req.query.url;
+    (async () => {
+        let result = await crawler(url, () => {
+          const nodes = Array.from(document.querySelectorAll('a'));
+          return nodes.map(({ innerText }) => innerText)
+        });
+        console.log(result);
+    })();
 
     const configurations = {
         displayHeaderFooter: true,
