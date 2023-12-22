@@ -22,7 +22,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     try {
         const browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
-            ignoreHTTPSErrors: true,
+            ignoreHTTPSErrors: false,
             headless: 'new', // Puppeteer defaults to headless mode
         });
         const page = await browser.newPage();
