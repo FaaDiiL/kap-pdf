@@ -24,18 +24,12 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
             ignoreHTTPSErrors: true,
             headless: true, // Puppeteer defaults to headless mode
-            executablePath:process.env.PUPPETEER_EXECUTABLE_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || 
+            '/Applications/Chromium.app/Contents/MacOS/Chromium', // Fallback for local development
         });
         const page = await browser.newPage();
-
         await page.goto(url, { waitUntil: 'networkidle0' });
-
-        // Wait for the specific element before generating the PDF
-        await page.waitForSelector('.ShareRegisterSummary', {
-            visible: true,
-        });
-        
-        const pdf = await page.pdf({ ...configurations,format: 'A4'});
+        const pdf = await page.pdf({ ...configurations,format: 'A4' });
 
         res.setHeader('Content-Disposition', 'attachment; filename="download.pdf"');
         res.contentType("application/pdf");
