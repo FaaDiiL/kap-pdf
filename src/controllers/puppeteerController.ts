@@ -23,7 +23,8 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         const browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
             ignoreHTTPSErrors: true,
-            headless: true // Puppeteer defaults to headless mode
+            headless: true, // Puppeteer defaults to headless mode
+            executablePath:process.env.PUPPETEER_EXECUTABLE_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
         });
         const page = await browser.newPage();
 
