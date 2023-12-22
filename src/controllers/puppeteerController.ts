@@ -26,7 +26,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
             headless: true, // Puppeteer defaults to headless mode
         });
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle0' });
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
         const pdf = await page.pdf({ ...configurations,format: 'A4' });
 
         res.setHeader('Content-Disposition', 'attachment; filename="download.pdf"');
