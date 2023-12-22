@@ -23,12 +23,10 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         const browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
             ignoreHTTPSErrors: true,
-            headless: "new", // Puppeteer defaults to headless mode
+            headless: true, // Puppeteer defaults to headless mode
         });
         const page = await browser.newPage();
-        await page.goto(url);
-        await page.waitForFunction("renderingCompleted === true")
-        
+        await page.goto(url, { waitUntil: 'networkidle0' });
         const pdf = await page.pdf({ ...configurations,format: 'A4' });
 
         res.setHeader('Content-Disposition', 'attachment; filename="download.pdf"');
