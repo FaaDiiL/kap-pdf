@@ -31,13 +31,11 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     try {
         const browser = await puppeteer.launch({
             executablePath: "google-chrome",
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
-            ignoreHTTPSErrors: true,
-            headless: 'new', // Puppeteer defaults to headless mode 
+            args: ['--no-sandbox', '--hide-scrollbars']
         });
         const page = await browser.newPage();
         console.log('Page created');
-        await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
+        await page.goto(url, { waitUntil: ['load', 'networkidle0', 'domcontentloaded']});
         await delay(9000)
         const pdf = await page.pdf({ ...configurations,format: 'A4' });
 
