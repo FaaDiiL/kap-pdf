@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import puppeteer from 'puppeteer';
+
 // Function to create a delay
 function delay(time: number) {
     return new Promise(function(resolve) {
