@@ -30,6 +30,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
 
     try {
         const browser = await puppeteer.launch({
+            executablePath: "google-chrome",
             args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--disable-web-security'],
             ignoreHTTPSErrors: true,
             headless: 'new', // Puppeteer defaults to headless mode 
