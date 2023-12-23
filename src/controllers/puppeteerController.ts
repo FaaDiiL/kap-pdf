@@ -36,7 +36,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
         });
         const page = await browser.newPage();
         console.log('Page created');
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+        await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
         await delay(9000)
         const pdf = await page.pdf({ ...configurations,format: 'A4' });
 
