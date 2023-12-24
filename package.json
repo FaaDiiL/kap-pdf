@@ -1,7 +1,7 @@
 {
   "name": "kap-pdf",
   "engines": {
-    "node": "^20.10.0"
+    "yarn": "1.22.21"
   },
   "version": "1.0.0",
   "description": "",
@@ -9,8 +9,9 @@
   "scripts": {
     "start": "node dist/app.js",
     "postinstall": "tsc",
-    "dev": "tsc && nodemon dist/app.js"
-    },
+    "dev": "tsc && nodemon dist/app.js",
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
