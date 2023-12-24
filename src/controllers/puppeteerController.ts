@@ -44,6 +44,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
 
         res.setHeader('Content-Disposition', 'attachment; filename="download.pdf"');
         res.contentType("application/pdf");
+        
         res.send(pdf);
 
         await browser.close();
