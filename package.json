@@ -9,9 +9,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "postinstall": "tsc",
-    "dev": "tsc && nodemon dist/app.js",
-    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
-  },
+    "dev": "tsc && nodemon dist/app.js"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
