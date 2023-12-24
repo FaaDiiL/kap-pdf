@@ -12,6 +12,9 @@ function delay(time: number) {
 export async function downloadPageAsPdf(req: Request, res: Response) {
     const url = req.query.url;
 
+    console.log('Start here')
+    console.log(req.query)
+    console.log('Finnish here')
     const configurations = {
         displayHeaderFooter: true,
         margin: {
@@ -44,7 +47,7 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
 
         res.setHeader('Content-Disposition', 'attachment; filename="download.pdf"');
         res.contentType("application/pdf");
-        
+
         res.send(pdf);
 
         await browser.close();
