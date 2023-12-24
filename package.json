@@ -1,5 +1,8 @@
 {
   "name": "kap-pdf",
+  "engines": {
+    "node": "^20.10.0"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "src/app.ts",
