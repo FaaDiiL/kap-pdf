@@ -13,8 +13,8 @@ export async function downloadPageAsPdf(req: Request, res: Response) {
     const url = req.query.url;
 
     console.log('Start here')
-    console.log(req.query)
-    console.log('Finnish here')
+    console.log((JSON.stringify(req)))
+    console.log('Finnish here');
     const configurations = {
         displayHeaderFooter: true,
         margin: {
